@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>麻雀点数</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>麻雀スコア</h1>
+
+  <div id="players">
+    <div class="player">
+      <h2>A</h2>
+      <p id="scoreA">25000</p>
+      <button onclick="addScore('A', 1000)">+1000</button>
+      <button onclick="addScore('A', -1000)">-1000</button>
+    </div>
+
+    <div class="player">
+      <h2>B</h2>
+      <p id="scoreB">25000</p>
+      <button onclick="addScore('B', 1000)">+1000</button>
+      <button onclick="addScore('B', -1000)">-1000</button>
+    </div>
+
+    <div class="player">
+      <h2>C</h2>
+      <p id="scoreC">25000</p>
+      <button onclick="addScore('C', 1000)">+1000</button>
+      <button onclick="addScore('C', -1000)">-1000</button>
+    </div>
+
+    <div class="player">
+      <h2>D</h2>
+      <p id="scoreD">25000</p>
+      <button onclick="addScore('D', 1000)">+1000</button>
+      <button onclick="addScore('D', -1000)">-1000</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

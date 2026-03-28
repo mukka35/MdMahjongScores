@@ -1,0 +1,21 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+#players {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.player {
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+
+button {
+  font-size: 20px;
+  margin: 5px;
+  padding: 10px;
+}

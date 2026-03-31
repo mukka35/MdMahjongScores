@@ -1,4 +1,4 @@
-﻿html, body { height: 100%; }
+html, body { height: 100%; }
 :root { --reach-size: clamp(48px, 12vw, 80px); }
 html { font-size: clamp(12px, 1.7vw, 18px); }
 body { margin: 0; font-family: '游ゴシック', 'Yu Gothic', Arial, sans-serif; background: #1f8a3f; color: #fff; overflow-x: hidden; }

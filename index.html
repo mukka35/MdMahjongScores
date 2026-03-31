@@ -1,0 +1,151 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MdMahjongScores</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="homeScreen" class="screen active">
+    <h1>麻雀得点管理</h1>
+    <button id="startMatchBtn" class="btn">対局開始</button>
+    <button id="titleListBtn" class="btn">タイトル一覧</button>
+  </div>
+
+  <div id="setupScreen" class="screen">
+    <h2>新規タイトル作成</h2>
+    <label>タイトル: <input id="matchTitle" type="text" placeholder="" /></label><br />
+    <label>人数:
+      <select id="playerCount">
+        <option value="4">4人打ち</option>
+        <option value="3">3人打ち</option>
+      </select>
+    </label><br />
+
+    <fieldset style="margin-top:8px;">
+      <legend>雀士名</legend>
+      <div id="playerNamesContainer"></div>
+    </fieldset>
+
+    <fieldset style="margin-top:8px;">
+      <legend>ルール</legend>
+      <label><input type="checkbox" id="ruleAka" /> 赤あり</label>
+      <label><input type="checkbox" id="ruleTsumoHo" /> ツモ連続</label>
+      <label><input type="checkbox" id="ruleTobi" checked /> 飛びあり</label>
+      <div class="rule-inline">
+        <label>ウマ(2着): <input id="ruleUmaSecond" type="number" value="10000" step="1000" min="0" /></label>
+        <label>ウマ(1着): <input id="ruleUmaTop" type="number" value="20000" step="1000" min="0" /></label>
+      </div>
+      <div class="rule-inline">
+        <label>オカ返し点: <input id="ruleOka" type="number" value="30000" step="1000" min="0" /></label>
+      </div>
+    </fieldset>
+
+    <button id="beginBattleBtn" class="btn">開始</button>
+    <button id="cancelSetupBtn" class="btn">戻る</button>
+  </div>
+
+  <div id="titleListScreen" class="screen">
+    <h2>タイトル一覧</h2>
+    <button id="createTitleBtn" class="btn">新規タイトル作成</button>
+    <div id="titleList" class="title-list-simple"></div>
+    <button id="backToHomeBtn" class="btn">ホームに戻る</button>
+  </div>
+
+  <div id="gameScreen" class="screen">
+    <h2 id="currentTitle">対局: </h2>
+    <div id="headInfo">
+      <div id="roundLabel">東1局</div>
+      <div id="honbaLabel">本場0</div>
+      <div id="kyoutakuLabel">供託0</div>
+      <div id="reachPoolLabel">立直棒0本</div>
+    </div>
+
+    <div id="gameBoard">
+      <div class="player-card top" id="playerTop"></div>
+      <div class="player-card left" id="playerLeft"></div>
+      <div class="player-card right" id="playerRight"></div>
+      <div class="player-card bottom" id="playerBottom"></div>
+    </div>
+
+    <div id="gameFooter">
+      <button onclick="startRyukyoku()" class="footer-btn">流局</button>
+      <button onclick="openTitleList()" class="footer-btn">タイトル一覧</button>
+      <button onclick="showScreen('home')" class="footer-btn">ホームに戻る</button>
+    </div>
+  </div>
+
+  <!-- モーダル：ツモ/ロン選択 -->
+  <div id="agariTypeModal" class="modal-overlay hidden" onclick="handleAgariTypeOverlayClick(event)">
+    <div class="modal-box">
+      <h3>上がり方を選択</h3>
+      <button class="modal-btn" onclick="selectAgariType('tsumo')">ツモ</button>
+      <button class="modal-btn" onclick="selectAgariType('ron')">ロン</button>
+      <button class="modal-btn" onclick="backFromAgariType()">戻る</button>
+    </div>
+  </div>
+
+  <!-- モーダル：放銃者選択（ロン時） -->
+  <div id="ronPlayerModal" class="modal-overlay hidden" onclick="handleRonPlayerOverlayClick(event)">
+    <div class="modal-box">
+      <h3>放銃者を選択</h3>
+      <div id="ronPlayerButtons"></div>
+      <button class="modal-btn" onclick="backFromRonPlayerModal()">戻る</button>
+    </div>
+  </div>
+
+  <!-- モーダル：翻数選択 -->
+  <div id="hanModal" class="modal-overlay hidden" onclick="handleHanOverlayClick(event)">
+    <div class="modal-box">
+      <h3>翻数を選択</h3>
+      <div id="hanButtons"></div>
+      <button class="modal-btn" onclick="backFromHanModal()">戻る</button>
+    </div>
+  </div>
+
+  <!-- モーダル：符選択 -->
+  <div id="fuModal" class="modal-overlay hidden" onclick="handleFuOverlayClick(event)">
+    <div class="modal-box">
+      <h3>符を選択</h3>
+      <div id="fuButtons"></div>
+      <button class="modal-btn" onclick="backFromFuModal()">戻る</button>
+    </div>
+  </div>
+
+  <div id="tenpaiModal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <h3>聴牌者を選択</h3>
+      <div id="tenpaiPlayerButtons"></div>
+      <button class="modal-btn" onclick="confirmRyukyoku()">確定</button>
+      <button class="modal-btn" onclick="cancelRyukyoku()">戻る</button>
+    </div>
+  </div>
+
+  <div id="resultScreen" class="screen">
+    <h2>対局終了</h2>
+    <div class="result-top-actions">
+      <button id="resultToTitlesBtn" class="btn">タイトル画面に戻る</button>
+      <button id="restartMatchBtn" class="btn">対局開始</button>
+    </div>
+    <div id="resultSummary"></div>
+    <div id="resultTable"></div>
+    <h3>成績</h3>
+    <div id="resultHistoryList" class="result-history-list"></div>
+  </div>
+
+  <div id="seatConfirmModal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <h3>席順設定</h3>
+      <div id="seatConfirmList"></div>
+      <button id="seatConfirmApplyBtn" class="modal-btn">この席順で開始</button>
+      <button id="seatConfirmCancelBtn" class="modal-btn">キャンセル</button>
+    </div>
+  </div>
+
+  <script src="utils/mahjong-calc.js"></script>
+  <script src="cloud-config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
